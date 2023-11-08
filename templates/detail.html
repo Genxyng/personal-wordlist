@@ -103,9 +103,9 @@
                             temp_html +=
                                 `
                             <li>
-                                ${sentence}&nbsp;&nbsp;&nbsp;<a
-                                href="javascript:delete_ex('${id}')">
-                                delete</a></li>
+                                <p>${sentence}&nbsp;&nbsp;&nbsp;<a
+                                class="btn btn-sm btn-danger" onclick="delete_ex('${id}')">
+                                delete</a></p></li>
                             `
                         }
                         list.append(temp_html)
@@ -116,6 +116,12 @@
 
         function add_ex() {
             let new_ex = $('#new-example').val()
+
+            if (!new_ex.includes(word)){
+                alert('Mohon sertakan kata '+ word + ' kedalam kalimat')
+                return
+            }
+
             $.ajax({
                 type: 'POST',
                 url: `/api/save_ex`,
@@ -127,6 +133,7 @@
                     console.log(response)
                     if (response.result === 'success') {
                         alert(response.msg)
+                        $('#new-example').val(' ')
                         get_examples()
                     }
                 }
